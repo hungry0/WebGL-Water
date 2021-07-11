@@ -5,10 +5,10 @@
         _MainTex ("_IteratorRT", 2D) = "white" {}
         _Delta("Delta",Vector) = (0.02, 0.02, 0)
     }
+    
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-        LOD 100
 
         Pass
         {
@@ -16,10 +16,10 @@
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
+            
             #include "UnityCG.cginc"
-             struct appdata
+            
+            struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
@@ -54,6 +54,7 @@
                 /* calculate average neighbor height */
                 float2 dx = float2(_Delta.x, 0.0);
                 float2 dy = float2(0.0, _Delta.y);
+                
                 float average = (
                     tex2D(_MainTex, i.uv - dx).r +
                     tex2D(_MainTex, i.uv - dy).r +
@@ -74,6 +75,7 @@
                 float drop = max(0.0, 1.0 - length(center * 0.5 + 0.5 - i.uv) / radius);
                 drop = 0.5 - cos(drop * UNITY_PI) * 0.5;
                 info.r += drop * strength;
+                
                 return info;
             }
             ENDCG

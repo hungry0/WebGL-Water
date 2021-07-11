@@ -4,12 +4,11 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         tiles("tiles", 2D) = "white"{}
-    //    water("water", 2D) = "black"{}
     }
+    
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-        LOD 100
 
         Pass
         {
@@ -19,8 +18,6 @@
             
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
             #include "HelperFunc.cginc"
@@ -56,11 +53,15 @@
                 light = normalize(UnityWorldSpaceLightDir(i.position));
                 float4 gl_FragColor = float4(getWallColor(i.position), 1.0);
                 float4 info = tex2D(water, -i.position.xz * 0.5 + 0.5);
-                if (i.position.y < info.r) {
+                
+                if (i.position.y < info.r)
+                {
                    gl_FragColor.rgb *= underwaterColor * 1.2;
                 }
+                
                 return gl_FragColor;
             }
+            
             ENDCG
         }
     }

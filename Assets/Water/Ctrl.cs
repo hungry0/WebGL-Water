@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace TTT
+namespace GLWater
 {
     public class Ctrl : MonoBehaviour
     {
@@ -34,6 +34,7 @@ namespace TTT
             };
             
             _meshRenderer = transform.GetComponent<MeshRenderer>();
+            
             m_CalcMat.SetVector(s_Center, Vector4.one * 0.25f);
             m_CalcMat.SetFloat(s_Radius, value: 0.03f);
             m_CalcMat.SetVector(Delta, Vector4.one * (1.0f / n));
@@ -77,22 +78,8 @@ namespace TTT
 
         public void RayCast()
         {
-            // if (Input.GetMouseButtonUp(0))
-            // {
-            //     m_CalcMat.SetFloat(s_Strength, 0);
-            // }
-            //
-            // if (!Input.GetMouseButton(0))
-            // {
-            //     return;
-            // }
-            //
-            float strength = 0.001f;
-            // if (Input.GetMouseButton(1))
-            // {
-            //     strength *= 3;
-            // }
-            
+            float strength = 0.01f;
+
             var screenPointToRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(screenPointToRay, out var raycastHit, 100) && Input.GetMouseButtonDown(0))
             {
@@ -107,30 +94,6 @@ namespace TTT
             {
                 m_CalcMat.SetFloat(s_Strength, 0);
             }
-            
-            
-
-            // if ()
-            // {
-            //
-            // }
-            // else
-            // {
-            //     m_CalcMat.SetFloat(s_Strength, 0);
-            // }
-                
-
-        //    Move();
         }
-        
-        // private void Move()
-        // {
-        //
-        //     
-        //     var localPos = transform.worldToLocalMatrix.MultiplyPoint(raycastHit.point);
-        //     var mesh = transform.GetComponent<MeshFilter>().sharedMesh; 
-        //     var center = new Vector2(-localPos.x / mesh.bounds.extents.x, -localPos.z / mesh.bounds.extents.z);
-        //     m_CalcMat.SetVector(s_Center, center);
-        // }
     }
 }

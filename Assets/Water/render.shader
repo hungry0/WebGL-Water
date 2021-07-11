@@ -18,18 +18,13 @@
     SubShader
     {
         Tags { "RenderType"="Transparent" }
-        LOD 100
 
         Pass
         {
-        //    Blend SrcAlpha OneMinusSrcAlpha
-        
             CGPROGRAM
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "Lighting.cginc"
             #include "UnityCG.cginc"
@@ -57,6 +52,7 @@
             float3 _Emission;
             float _Specular;
             float _Gloss;
+            
             v2f vert (appdata v)
             {
                 v2f o;
@@ -68,14 +64,18 @@
                 return o;
             }
             
-            float3 getSurfaceRayColor(float3 origin, float3 ray, float3 waterColor) {
+            float3 getSurfaceRayColor(float3 origin, float3 ray, float3 waterColor)
+            {
                 float3 color;
-                if (ray.y < 0.0) {
-                  float2 t = intersectCube(origin, ray, float3(-1, -poolHeight, -1), float3(1, 2.0, 1));
-                  color = getWallColor(origin + ray * t.y);
+                if (ray.y < 0.0)
+                {
+                    float2 t = intersectCube(origin, ray, float3(-1, -poolHeight, -1), float3(1, 2.0, 1));
+                    color = getWallColor(origin + ray * t.y);
                 } 
 
-                if (ray.y < 0.0) color *= waterColor;
+                if (ray.y < 0.0)
+                    color *= waterColor;
+                
                 return color;
             }
             
@@ -100,13 +100,13 @@
                 fixed4 lightColor = UnityBlinnPhongLight(so, normalize(UnityWorldSpaceViewDir(worldPos)), unityLight);
                 col *= float4(UNITY_LIGHTMODEL_AMBIENT.xyz, 1) + lightColor; 
 
-                // 天空球
                 half4 reflection = texCUBE(_Skybox, so.Normal);
                 
                 float3 refractedRay = normalize(refract(-normalize(UnityWorldSpaceViewDir(worldPos)), so.Normal, IOR_AIR / IOR_WATER));
                 float4 refractedColor = float4(getSurfaceRayColor(worldPos, refractedRay, abovewaterColor), 1);
                 return col * refractedColor + reflection;
             }
+            
             ENDCG
         }
     }
