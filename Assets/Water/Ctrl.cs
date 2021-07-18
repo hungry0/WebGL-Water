@@ -78,7 +78,7 @@ namespace GLWater
 
         public void RayCast()
         {
-            float strength = 0.01f;
+            float strength = 0.03f;
 
             var screenPointToRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(screenPointToRay, out var raycastHit, 100) && Input.GetMouseButtonDown(0))
